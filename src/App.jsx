@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import profile from './assets/profile.png';
+import profile from './assets/profile.png'
 import './App.css'
 
 const slides = [
@@ -97,17 +97,65 @@ const projectHighlights = [
   'Use of 3 different APIs: OpenWeather for weather, Unsplash for outfit ideas, and OpenAI for suggestions on self-care in that weather.',
 ]
 
+function AnimatedText({ text, as: Tag = 'span', className = '', animateKey }) {
+  return (
+    <Tag className={className} key={animateKey}>
+      {text.split('').map((character, index) => (
+        <span
+          key={`${character}-${index}`}
+          className={character === ' ' ? 'letter-space' : 'falling-letter'}
+          style={{ '--letter-delay': `${index * 0.03}s` }}
+        >
+          {character === ' ' ? '\u00A0' : character}
+        </span>
+      ))}
+    </Tag>
+  )
+}
+
 function App() {
   const [activeSlide, setActiveSlide] = useState(0)
+  const [slideDirection, setSlideDirection] = useState('next')
+  const [titleTick, setTitleTick] = useState(0)
+  const [heroStyle, setHeroStyle] = useState({
+    '--hero-rotate-x': '0deg',
+    '--hero-rotate-y': '0deg',
+    '--hero-glow-x': '50%',
+    '--hero-glow-y': '50%',
+  })
+
+  useEffect(() => {
+    const headingLoop = window.setInterval(() => {
+      setTitleTick((current) => current + 1)
+    }, 7000)
+
+    return () => window.clearInterval(headingLoop)
+  }, [])
+
+  const changeSlide = (step) => {
+    setSlideDirection(step > 0 ? 'next' : 'prev')
+    setActiveSlide((current) => (current + step + slides.length) % slides.length)
+    setTitleTick((current) => current + 1)
+  }
+
+  const jumpToSlide = (index) => {
+    if (index === activeSlide) {
+      return
+    }
+
+    setSlideDirection(index > activeSlide ? 'next' : 'prev')
+    setActiveSlide(index)
+    setTitleTick((current) => current + 1)
+  }
 
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key === 'ArrowRight') {
-        setActiveSlide((current) => (current + 1) % slides.length)
+        changeSlide(1)
       }
 
       if (event.key === 'ArrowLeft') {
-        setActiveSlide((current) => (current - 1 + slides.length) % slides.length)
+        changeSlide(-1)
       }
     }
 
@@ -117,13 +165,143 @@ function App() {
 
   const activeSection = slides[activeSlide]
 
+  const handleHeroMove = (event) => {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const x = (event.clientX - bounds.left) / bounds.width
+    const y = (event.clientY - bounds.top) / bounds.height
+    const rotateY = (x - 0.5) * 10
+    const rotateX = (0.5 - y) * 10
+
+    setHeroStyle({
+      '--hero-rotate-x': `${rotateX.toFixed(2)}deg`,
+      '--hero-rotate-y': `${rotateY.toFixed(2)}deg`,
+      '--hero-glow-x': `${(x * 100).toFixed(1)}%`,
+      '--hero-glow-y': `${(y * 100).toFixed(1)}%`,
+    })
+  }
+
+  const resetHeroMove = () => {
+    setHeroStyle({
+      '--hero-rotate-x': '0deg',
+      '--hero-rotate-y': '0deg',
+      '--hero-glow-x': '50%',
+      '--hero-glow-y': '50%',
+    })
+  }
+
+  const renderSlideBody = () => {
+    switch (activeSection.layout) {
+      case 'profile':
+        return (
+          <div className="profile-grid">
+            <div className="stat-card floating-card" style={{ '--float-delay': '0s' }}>
+              <span className="stat-value">3rd Year</span>
+              <span className="stat-label">B.Voc Software Development</span>
+            </div>
+            <div className="stat-card floating-card" style={{ '--float-delay': '0.12s' }}>
+              <span className="stat-value">Entry Level</span>
+              <span className="stat-label">Open to practical software roles</span>
+            </div>
+            <div className="quote-card floating-card" style={{ '--float-delay': '0.2s' }}>
+              <p>
+                Eager to grow through practical experience, collaborative work,
+                and continued learning.
+              </p>
+            </div>
+          </div>
+        )
+      case 'education':
+        return (
+          <div className="education-list">
+            {education.map((item, index) => (
+              <section
+                className="timeline-card floating-card"
+                key={item.degree}
+                style={{ '--float-delay': `${index * 0.12}s` }}
+              >
+                <p className="timeline-years">{item.years}</p>
+                <h4>{item.degree}</h4>
+                <p>{item.place}</p>
+                <strong>{item.score}</strong>
+              </section>
+            ))}
+          </div>
+        )
+      case 'skills':
+        return (
+          <div className="skills-grid">
+            {skillGroups.map((group, index) => (
+              <section
+                className="skill-card floating-card"
+                key={group.label}
+                style={{ '--float-delay': `${index * 0.1}s` }}
+              >
+                <h4>{group.label}</h4>
+                <div className="pill-row">
+                  {group.items.map((item) => (
+                    <span className="pill" key={item}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        )
+      case 'societies':
+        return (
+          <div className="society-layout">
+            {societyRoles.map((role, index) => (
+              <section
+                className="role-card floating-card"
+                key={role}
+                style={{ '--float-delay': `${index * 0.1}s` }}
+              >
+                <span className="role-index">0{index + 1}</span>
+                <p>{role}</p>
+              </section>
+            ))}
+          </div>
+        )
+      case 'projects':
+        return (
+          <div className="project-contact-grid">
+            {projectHighlights.map((highlight, index) => (
+              <section
+                className="project-card floating-card"
+                key={highlight}
+                style={{ '--float-delay': `${index * 0.14}s` }}
+              >
+                <p className="project-label">ASTER</p>
+                <p className="project-point">{highlight}</p>
+              </section>
+            ))}
+          </div>
+        )
+      default:
+        return null
+    }
+  }
+
   return (
     <>
       <main className="portfolio-shell">
-        <section className="hero-panel">
+        <section
+          className="hero-panel"
+          style={heroStyle}
+          onMouseMove={handleHeroMove}
+          onMouseLeave={resetHeroMove}
+        >
+          <div className="hero-orb hero-orb-one" aria-hidden="true" />
+          <div className="hero-orb hero-orb-two" aria-hidden="true" />
           <div className="hero-copy">
             <p className="eyebrow">Portfolio</p>
-            <h1>Nandini Singh</h1>
+            <AnimatedText
+              text="Nandini Singh"
+              as="h1"
+              className="hero-name"
+              animateKey={`hero-${titleTick}`}
+            />
             <p className="hero-lead">
               B.Voc Software Development student crafting clean frontend experiences
               and growing toward real-world product work.
@@ -136,7 +314,9 @@ function App() {
           </div>
 
           <div className="hero-card">
-            <img className="profile-photo" src={profile} alt="Nandini Singh" />
+            <div className="profile-photo-stage">
+              <img className="profile-photo" src={profile} alt="Nandini Singh" />
+            </div>
             <p className="hero-card-title">Focus Areas</p>
             <ul className="focus-list">
               <li>Frontend development</li>
@@ -157,9 +337,7 @@ function App() {
               <button
                 type="button"
                 className="nav-button"
-                onClick={() =>
-                  setActiveSlide((current) => (current - 1 + slides.length) % slides.length)
-                }
+                onClick={() => changeSlide(-1)}
                 aria-label="Previous section"
               >
                 {'<'}
@@ -170,7 +348,7 @@ function App() {
               <button
                 type="button"
                 className="nav-button"
-                onClick={() => setActiveSlide((current) => (current + 1) % slides.length)}
+                onClick={() => changeSlide(1)}
                 aria-label="Next section"
               >
                 {'>'}
@@ -179,107 +357,22 @@ function App() {
           </div>
 
           <div className="slides-viewport">
-            <div
-              className="slides-track"
-              style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+            <article
+              key={activeSection.id}
+              className={`slide active-slide slide-${slideDirection}`}
             >
-              <article className="slide profile-slide">
-                <div className="slide-intro">
-                  <p className="eyebrow">{slides[0].eyebrow}</p>
-                  <h3>{slides[0].title}</h3>
-                  <p>{slides[0].description}</p>
-                </div>
-                <div className="profile-grid">
-                  <div className="stat-card">
-                    <span className="stat-value">3rd Year</span>
-                    <span className="stat-label">B.Voc Software Development</span>
-                  </div>
-                  <div className="stat-card">
-                    <span className="stat-value">Entry Level</span>
-                    <span className="stat-label">Open to practical software roles</span>
-                  </div>
-                  <div className="quote-card">
-                    <p>
-                      Eager to grow through practical experience, collaborative work,
-                      and continued learning.
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              <article className="slide">
-                <div className="slide-intro">
-                  <p className="eyebrow">{slides[1].eyebrow}</p>
-                  <h3>{slides[1].title}</h3>
-                  <p>{slides[1].description}</p>
-                </div>
-                <div className="education-list">
-                  {education.map((item) => (
-                    <section className="timeline-card" key={item.degree}>
-                      <p className="timeline-years">{item.years}</p>
-                      <h4>{item.degree}</h4>
-                      <p>{item.place}</p>
-                      <strong>{item.score}</strong>
-                    </section>
-                  ))}
-                </div>
-              </article>
-
-              <article className="slide">
-                <div className="slide-intro">
-                  <p className="eyebrow">{slides[2].eyebrow}</p>
-                  <h3>{slides[2].title}</h3>
-                  <p>{slides[2].description}</p>
-                </div>
-                <div className="skills-grid">
-                  {skillGroups.map((group) => (
-                    <section className="skill-card" key={group.label}>
-                      <h4>{group.label}</h4>
-                      <div className="pill-row">
-                        {group.items.map((item) => (
-                          <span className="pill" key={item}>
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </section>
-                  ))}
-                </div>
-              </article>
-
-              <article className="slide">
-                <div className="slide-intro">
-                  <p className="eyebrow">{slides[3].eyebrow}</p>
-                  <h3>{slides[3].title}</h3>
-                  <p>{slides[3].description}</p>
-                </div>
-                <div className="society-layout">
-                  {societyRoles.map((role, index) => (
-                    <section className="role-card" key={role}>
-                      <span className="role-index">0{index + 1}</span>
-                      <p>{role}</p>
-                    </section>
-                  ))}
-                </div>
-              </article>
-
-              <article className="slide">
-                <div className="slide-intro">
-                  <p className="eyebrow">{slides[4].eyebrow}</p>
-                  <h3>{slides[4].title}</h3>
-                  <p>{slides[4].description}</p>
-                </div>
-                <div className="project-contact-grid">
-                  {projectHighlights.map((highlight, index) => (
-                    <section className="project-card" key={highlight}>
-                      <p className="project-label">Featured Project</p>
-                      <h4>ASTER 0{index + 1}</h4>
-                      <p className="project-point">{highlight}</p>
-                    </section>
-                  ))}
-                </div>
-              </article>
-            </div>
+              <div className="slide-intro">
+                <p className="eyebrow">{activeSection.eyebrow}</p>
+                <AnimatedText
+                  text={activeSection.title}
+                  as="h3"
+                  className="slide-title"
+                  animateKey={`${activeSection.id}-${titleTick}`}
+                />
+                <p>{activeSection.description}</p>
+              </div>
+              {renderSlideBody()}
+            </article>
           </div>
 
           <div className="dot-nav" aria-label="Choose a section">
@@ -288,7 +381,7 @@ function App() {
                 key={slide.id}
                 type="button"
                 className={index === activeSlide ? 'dot active' : 'dot'}
-                onClick={() => setActiveSlide(index)}
+                onClick={() => jumpToSlide(index)}
                 aria-label={`Open ${slide.eyebrow}`}
                 aria-pressed={index === activeSlide}
               />
