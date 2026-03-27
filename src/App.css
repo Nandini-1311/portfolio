@@ -1,7 +1,6 @@
 .portfolio-shell {
   min-height: 100vh;
   padding: 20px;
-  padding-bottom: 108px;
   display: grid;
   gap: 20px;
 }
@@ -12,7 +11,7 @@
   border-radius: 32px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 24px 72px rgba(64, 45, 29, 0.14);
+  box-shadow: 0 24px 80px rgba(58, 41, 22, 0.14);
 }
 
 .hero-panel {
@@ -22,15 +21,15 @@
   gap: 36px;
   align-items: center;
   background:
-    radial-gradient(circle at top left, rgba(255, 246, 237, 0.42), transparent 32%),
-    linear-gradient(135deg, #b08b6c 0%, #9a775c 48%, #86664e 100%);
+    radial-gradient(circle at top left, rgba(242, 167, 80, 0.4), transparent 36%),
+    linear-gradient(135deg, #f8efe2 0%, #fdf8f1 52%, #efe0cb 100%);
 }
 
 .hero-panel::after {
   content: '';
   position: absolute;
   inset: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(91, 63, 31, 0.16);
   border-radius: 24px;
   pointer-events: none;
 }
@@ -60,7 +59,7 @@
 
 .hero-lead {
   max-width: 22ch;
-  font-size: clamp(1.05rem, 1vw + 0.85rem, 1.6rem);
+  font-size: larger;
   line-height: 1.45;
   color: var(--text-strong);
 }
@@ -76,16 +75,16 @@
 .hero-actions a {
   padding: 0.65rem 0.95rem;
   border-radius: 999px;
-  border: 1px solid rgba(77, 60, 47, 0.12);
-  background: rgba(248, 241, 234, 0.78);
+  border: 1px solid rgba(91, 63, 31, 0.16);
+  background: rgba(255, 252, 247, 0.74);
   font-size: 0.92rem;
 }
 
 .hero-card {
   padding: 30px;
-  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  border-left: 1px solid rgba(91, 63, 31, 0.12);
   background:
-    linear-gradient(180deg, rgba(251, 245, 239, 0.18) 0%, rgba(248, 240, 232, 0.42) 100%);
+    linear-gradient(180deg, rgba(96, 67, 38, 0.08) 0%, rgba(255, 255, 255, 0.36) 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -100,8 +99,8 @@
   object-fit: cover;
   object-position: center top;
   border-radius: 32px;
-  border: 3px solid rgba(248, 241, 234, 0.9);
-  box-shadow: 0 18px 36px rgba(72, 52, 36, 0.18);
+  border: 3px solid rgba(255, 247, 236, 0.9);
+  box-shadow: 0 18px 36px rgba(107, 72, 40, 0.24);
 }
 
 .hero-card-title,
@@ -131,18 +130,8 @@
 .stat-card,
 .quote-card {
   border-radius: 24px;
-  background: rgba(248, 242, 236, 0.88);
-  border: 1px solid rgba(92, 73, 57, 0.1);
-}
-
-.role-card,
-.timeline-card,
-.skill-card,
-.project-card,
-.contact-card,
-.stat-card,
-.quote-card {
-  color: #000;
+  background: rgba(255, 252, 247, 0.82);
+  border: 1px solid rgba(91, 63, 31, 0.12);
 }
 
 .focus-list li {
@@ -157,9 +146,9 @@
   grid-template-rows: auto 1fr auto;
   gap: 24px;
   background:
-    radial-gradient(circle at top left, rgba(214, 186, 160, 0.16), transparent 28%),
-    linear-gradient(145deg, #5f4736 0%, #4f3a2d 52%, #3f2f25 100%);
-  color: #f4ede6;
+    radial-gradient(circle at bottom right, rgba(72, 209, 219, 0.2), transparent 34%),
+    linear-gradient(140deg, #2892b3 0%, #08535f 55%, #6e4f1c 160%);
+  color: black;
 }
 
 .slideshow-topbar,
@@ -190,8 +179,8 @@
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: #f6eee7;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f6fbf8;
   font-size: 1rem;
 }
 
@@ -212,8 +201,8 @@
 .slides-viewport {
   overflow: hidden;
   border-radius: 28px;
-  background: rgba(34, 23, 17, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 18, 22, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .slides-track {
@@ -238,7 +227,7 @@
 
 .slide-intro p:last-child {
   max-width: 42ch;
-  color: rgba(244, 237, 229, 0.8);
+  color: rgba(238, 244, 242, 0.84);
   font-size: 0.96rem;
   line-height: 1.65;
 }
@@ -272,11 +261,11 @@
 .stat-value {
   font-family: var(--font-display);
   font-size: 1.5rem;
-  color: #000;
+  color: var(--accent-soft);
 }
 
 .stat-label {
-  color: #000;
+  color: var(--text-soft);
 }
 
 .education-list {
@@ -303,7 +292,7 @@
 .timeline-card strong {
   display: inline-block;
   margin-top: 18px;
-  color: #2d241d;
+  color: #fff7e8;
 }
 
 .skills-grid {
@@ -320,9 +309,9 @@
 .pill {
   padding: 0.6rem 0.85rem;
   border-radius: 999px;
-  background: rgba(122, 92, 67, 0.14);
-  border: 1px solid rgba(92, 73, 57, 0.16);
-  color: #3b2f27;
+  background: rgba(36, 85, 93, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f4f7f5;
 }
 
 .society-layout {
@@ -334,7 +323,7 @@
 }
 
 .project-contact-grid {
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .contact-card,
@@ -348,33 +337,6 @@
   font-size: 1rem;
 }
 
-.project-point {
-  color: #000;
-  line-height: 1.6;
-}
-
-.contact-footer {
-  position: fixed;
-  left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 0.9rem 1.35rem;
-  border-radius: 999px;
-  background: rgba(248, 242, 236, 0.94);
-  border: 1px solid rgba(92, 73, 57, 0.14);
-  box-shadow: 0 12px 30px rgba(54, 38, 27, 0.12);
-  backdrop-filter: blur(10px);
-}
-
-.contact-footer a {
-  color: #2d241d;
-  font-size: 0.94rem;
-}
-
 .dot-nav {
   justify-content: center;
 }
@@ -384,14 +346,14 @@
   height: 12px;
   border-radius: 50%;
   opacity: 0.55;
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.44);
 }
 
 .dot.active {
   width: 44px;
   border-radius: 999px;
   opacity: 1;
-  background: #d2b293;
+  background: #f2a750;
 }
 
 @media (max-width: 1080px) {
@@ -402,7 +364,7 @@
 
   .hero-card {
     border-left: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-top: 1px solid rgba(91, 63, 31, 0.12);
   }
 
   .education-list,
@@ -417,7 +379,6 @@
   .portfolio-shell {
     padding: 14px;
     gap: 14px;
-    padding-bottom: 116px;
   }
 
   .hero-panel,
@@ -453,13 +414,5 @@
 
   .profile-grid {
     grid-template-columns: 1fr;
-  }
-
-  .contact-footer {
-    width: calc(100% - 28px);
-    justify-content: center;
-    gap: 12px;
-    padding: 0.85rem 1rem;
-    flex-wrap: wrap;
   }
 }

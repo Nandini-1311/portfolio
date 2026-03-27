@@ -272,7 +272,8 @@ function App() {
                 <div className="project-contact-grid">
                   {projectHighlights.map((highlight, index) => (
                     <section className="project-card" key={highlight}>
-                      <p className="project-label">ASTER</p>
+                      <p className="project-label">Featured Project</p>
+                      <h4>ASTER 0{index + 1}</h4>
                       <p className="project-point">{highlight}</p>
                     </section>
                   ))}
